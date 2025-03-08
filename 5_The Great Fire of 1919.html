@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFERNO</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: url('5_The Great Fire of 1919.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .media-container {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .video {
+            position: absolute;
+            width: 35em;
+            height: 19.6875em;
+            opacity: 0.9;
+        }
+
+        /* INFERNO Title */
+        .teko-unique {
+            font-family: "Teko", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            letter-spacing: 0.001em;
+            position: absolute;
+            top: 1.75em;
+            left: 1em;
+            font-size: 8em;
+            color: white;
+            opacity: 0;
+            z-index: 10;
+            transition: opacity 5s ease;
+        }
+
+        /* Intro Text */
+        .intro-text {
+            font-family: "Inconsolata", monospace;
+            font-weight: 500;
+            font-size: 1.5em;
+            position: absolute;
+            bottom: 1.5em;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ee2341;
+            background-color: white;
+            padding: 1.25em;
+            text-align: left;
+            opacity: 0;
+            transition: opacity 3s ease;
+            z-index: 100;
+            max-width: 100%;
+        }
+
+        /* Arrow Navigation Button */
+            .nav-button {
+                position: absolute;
+                top: 6em;   /* Increased space from top */
+                right: 3em; /* Increased space from right */
+                width: 3.75em;  /* Approximate conversion from 60px */
+                height: 3.75em; /* Approximate conversion from 60px */
+                background: none;
+                border: none;
+                cursor: pointer;
+                opacity: 0;
+                transition: opacity 2s ease, transform 0.3s ease;
+                z-index: 200;
+            }
+
+            .nav-button::before {
+                content: "";
+                display: block;
+                width: 1.875em;  /* Approximate conversion from 30px */
+                height: 1.875em; /* Approximate conversion from 30px */
+                border-right: 0.375em solid white; /* Approximate conversion from 6px */
+                border-bottom: 0.375em solid white; /* Approximate conversion from 6px */
+                transform: rotate(-45deg);
+                margin: auto;
+            }
+
+            .nav-button:hover::before {
+                border-right: 0.375em solid #ee2341;
+                border-bottom: 0.375em solid #ee2341;
+                transform: rotate(-45deg) scale(1.3);
+            }
+
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="media-container" id="mediaContainer"></div>
+    <audio id="backgroundAudio" loop>
+        <source src="background.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const videos = [
+            { src: "https://www.youtube.com/embed/RzEaoTZ3MX4?autoplay=1&enablejsapi=1&loop=1&playlist=RzEaoTZ3MX4", top: "70%", left: "80%" },
+            { src: "https://www.youtube.com/embed/_qr8JEATx20?autoplay=1&enablejsapi=1&loop=1&playlist=_qr8JEATx20", top: "20%", left: "50%" },
+            { src: "https://www.youtube.com/embed/4aY9CJIafjw?autoplay=1&enablejsapi=1&loop=1&playlist=4aY9CJIafjw", top: "50%", left: "30%" },
+            { src: "https://www.youtube.com/embed/IlVvd5dxRZQ?autoplay=1&enablejsapi=1&loop=1&playlist=IlVvd5dxRZQ", top: "60%", left: "10%" },
+            { src: "https://www.youtube.com/embed/KQpG0tLbz9s?autoplay=1&enablejsapi=1&loop=1&playlist=KQpG0tLbz9s", top: "30%", left: "70%" }
+        ];
+
+        setTimeout(() => {
+            const introText = document.createElement('div');
+            introText.className = 'intro-text';
+            introText.textContent = "The Great Fire of 1919 swept through Alberta and Saskatchewan, consuming nearly 5 million acres of land. This catastrophic fire altered the landscape, destroying large amounts of timber and impacting local communities. The scale of the fire led to new fire prevention and management policies in Canada.";
+            document.body.appendChild(introText);
+
+            setTimeout(() => {
+                introText.style.opacity = 1;
+            }, 100);
+
+            setTimeout(() => {
+                introText.style.opacity = 0;
+            }, 18000);
+
+            let videoIndex = 0;
+            function loadNextVideo() {
+                if (videoIndex < videos.length) {
+                    const video = videos[videoIndex];
+                    const iframe = document.createElement("iframe");
+                    iframe.src = video.src;
+                    iframe.className = "video";
+                    iframe.style.top = video.top;
+                    iframe.style.left = video.left;
+                    iframe.allow = "autoplay; encrypted-media";
+                    document.getElementById("mediaContainer").appendChild(iframe);
+                    
+                    videoIndex++;
+                    setTimeout(loadNextVideo, 8000);  // Load the next video after 8 seconds
+                } else {
+                    setTimeout(() => {
+                        const infernoText = document.createElement('div');
+                        infernoText.className = 'teko-unique';
+                        infernoText.textContent = "THE GREAT FIRE OF 1919";
+                        document.body.appendChild(infernoText);
+
+                        setTimeout(() => {
+                            infernoText.style.opacity = 1;
+                        }, 100);
+
+                        setTimeout(() => {
+                            const navButton = document.createElement('button');
+                            navButton.className = 'nav-button';
+                            navButton.onclick = () => window.location.href = '6_Black Friday.html';
+                            document.body.appendChild(navButton);
+
+                            setTimeout(() => {
+                                navButton.style.opacity = 1;
+                            }, 5000);
+                        }, 5000);
+                    }, 8000);
+                }
+            }
+
+            setTimeout(loadNextVideo, 22000);  // Start video load after intro text
+        }, 5000);
+    </script>
+</body>
+</html>
